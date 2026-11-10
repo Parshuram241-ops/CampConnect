@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear CampConnect Storage</title>
+    <style>
+        body {
+            font-family: system-ui;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .danger {
+            background: #ef4444;
+        }
+        .danger:hover {
+            background: #dc2626;
+        }
+        pre {
+            background: #f1f5f9;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>CampConnect Storage Manager</h1>
+    
+    <h2>Current Storage Data:</h2>
+    <pre id="storage-data"></pre>
+    
+    <h2>Actions:</h2>
+    <button onclick="clearUser()">Clear User Data</button>
+    <button onclick="clearConversations()">Clear Conversations</button>
+    <button onclick="clearWishlist()">Clear Wishlist</button>
+    <button onclick="clearNotifications()">Clear Notifications</button>
+    <button class="danger" onclick="clearAll()">Clear Everything</button>
+    <button onclick="location.reload()">Refresh</button>
+    
+    <script>
+        function showData() {
+            const data = {
+                user: localStorage.getItem('campconnectUser'),
+                loggedIn: localStorage.getItem('campconnectLoggedIn'),
+                conversations: localStorage.getItem('campconnect_conversations'),
+                wishlist: localStorage.getItem('campconnect_wishlist'),
+                notifications: localStorage.getItem('campconnect_notifications'),
+            };
+            document.getElementById('storage-data').textContent = JSON.stringify(data, null, 2);
+        }
+        
+        function clearUser() {
+            localStorage.removeItem('campconnectUser');
+            localStorage.removeItem('campconnectLoggedIn');
+            localStorage.removeItem('campconnectToken');
+            alert('User data cleared');
+            showData();
+        }
+        
+        function clearConversations() {
+            localStorage.removeItem('campconnect_conversations');
+            alert('Conversations cleared');
+            showData();
+        }
+        
+        function clearWishlist() {
+            localStorage.removeItem('campconnect_wishlist');
+            alert('Wishlist cleared');
+            showData();
+        }
+        
+        function clearNotifications() {
+            localStorage.removeItem('campconnect_notifications');
+            alert('Notifications cleared');
+            showData();
+        }
+        
+        function clearAll() {
+            if (confirm('Are you sure you want to clear ALL localStorage data?')) {
+                localStorage.clear();
+                alert('All data cleared');
+                showData();
+            }
+        }
+        
+        showData();
+    </script>
+</body>
+</html>

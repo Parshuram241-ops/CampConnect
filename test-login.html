@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>CampConnect Login Test</h1>
+    <button onclick="testLogin()">Test Login</button>
+    <hr>
+    <pre id="output"></pre>
+
+    <script>
+        async function testLogin() {
+            const output = document.getElementById('output');
+            output.innerHTML = '🔄 Testing login...\n';
+            
+            try {
+                output.innerHTML += '📡 Sending request to http://localhost:5000/api/auth/login\n';
+                output.innerHTML += 'Email: pass@gmail.com\n';
+                output.innerHTML += 'Password: pass@12\n\n';
+                
+                const response = await axios.post('http://localhost:5000/api/auth/login', {
+                    email: 'pass@gmail.com',
+                    password: 'pass@12'
+                }, {
+                    timeout: 10000,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                output.innerHTML += '✅ SUCCESS!\n';
+                output.innerHTML += 'Status: ' + response.status + '\n';
+                output.innerHTML += 'User: ' + response.data.data.user.name + '\n';
+                output.innerHTML += 'Email: ' + response.data.data.user.email + '\n';
+                output.innerHTML += 'Token: ' + response.data.data.token.substring(0, 50) + '...\n';
+                
+            } catch (error) {
+                output.innerHTML += '❌ ERROR!\n\n';
+                output.innerHTML += 'Error Code: ' + error.code + '\n';
+                output.innerHTML += 'Error Message: ' + error.message + '\n';
+                output.innerHTML += 'Status: ' + (error.response?.status || 'N/A') + '\n';
+                output.innerHTML += 'Response: ' + JSON.stringify(error.response?.data, null, 2) + '\n';
+                
+                if (error.code === 'ECONNREFUSED') {
+                    output.innerHTML += '\n⚠️ Backend on port 5000 is NOT running or not accessible\n';
+                } else if (error.code === 'ECONNABORTED') {
+                    output.innerHTML += '\n⚠️ Request timed out\n';
+                } else if (error.message.includes('ERR_NETWORK')) {
+                    output.innerHTML += '\n⚠️ Network error - possible CORS issue\n';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
