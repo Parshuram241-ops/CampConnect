@@ -31,7 +31,7 @@ Add this Vercel environment variable for Production (and Preview if needed):
 
 | Variable | Value |
 | --- | --- |
-| `VITE_API_URL` | `https://<your-render-service>.onrender.com/api` |
+| `VITE_API_URL` | `https://campconnect-api-tup7.onrender.com/api` |
 
 The included `vercel.json` sends frontend routes to `index.html`, so React Router routes work on refresh.
 
